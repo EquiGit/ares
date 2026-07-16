@@ -1,0 +1,6 @@
+{
+  "name": "ARES",
+  "description": "Ayuoyi's Realtime EquiPay System - A real-time high-fidelity payment receiver and parsed SMS monitor for Equity Bank accounts.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

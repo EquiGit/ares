@@ -1,0 +1,62 @@
+[
+  {
+    "id": "1",
+    "amount": 2500,
+    "currency": "KES",
+    "senderName": "JOHN DOE",
+    "senderPhone": "254712345678",
+    "reference": "OGE48FSF8S",
+    "account": "600123",
+    "timestamp": "2026-07-16T02:43:58.535Z",
+    "balance": 150000,
+    "rawMessage": "EazzyPay: Payment of KES 2,500.00 to Buy Goods Acc 600123 from JOHN DOE Ref: OGE48FSF8S on 2026-07-14 09:15:30. Balance KES 150,000.00.",
+    "status": "completed",
+    "parsedSuccessfully": true,
+    "type": "eazzypay"
+  },
+  {
+    "id": "2",
+    "amount": 12000,
+    "currency": "KES",
+    "senderName": "ALICE WAMBUI",
+    "senderPhone": "254711223344",
+    "reference": "OGE89XSA2S",
+    "account": "9876543210",
+    "timestamp": "2026-07-16T03:13:58.535Z",
+    "balance": 162000,
+    "rawMessage": "EQBK: Mobile Transfer of KES 12,000.00 from ALICE WAMBUI (254711223344) to Acc. 9876543210 on 2026-07-14 09:30:15. Ref: OGE89XSA2S. Balance: KES 162,000.00.",
+    "status": "completed",
+    "parsedSuccessfully": true,
+    "type": "mobile_transfer"
+  },
+  {
+    "id": "3",
+    "amount": 450,
+    "currency": "KES",
+    "senderName": "DAVID OTIENO",
+    "senderPhone": "254722334455",
+    "reference": "OGE12ASD3A",
+    "account": "9876543210",
+    "timestamp": "2026-07-16T03:55:58.535Z",
+    "balance": 162450,
+    "rawMessage": "Equitel: You have received KES 450.00 from 254722334455 - DAVID OTIENO. Ref: OGE12ASD3A on 2026-07-14 10:05:00. Balance: KES 162,450.00.",
+    "status": "completed",
+    "parsedSuccessfully": true,
+    "type": "equitel"
+  },
+  {
+    "id": "4",
+    "amount": 7800,
+    "currency": "KES",
+    "senderName": "GRACE MUTUA",
+    "senderPhone": "254733445566",
+    "reference": "OGE55TGY7U",
+    "account": "600123",
+    "timestamp": "2026-07-16T05:31:58.535Z",
+    "balance": 170250,
+    "rawMessage": "EazzyPay: Payment of KES 7,800.00 to Buy Goods Acc 600123 from GRACE MUTUA Ref: OGE55TGY7U on 2026-07-14 10:45:00. Balance KES 170,250.00.",
+    "status": "completed",
+    "parsedSuccessfully": true,
+    "type": "eazzypay"
+  }
+]
