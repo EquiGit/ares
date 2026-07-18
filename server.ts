@@ -128,6 +128,34 @@ app.post('/api/transactions/clear', (req, res) => {
 });
 
 // API: Webhook endpoint for Equity Payment Messages
+function isEquityPaymentSMS(message: string): boolean {
+
+    const text = message.toLowerCase();
+
+    const equityPatterns = [
+
+        // New Equity format
+        ["confirmed", "phone no", "received via m-pesa", "ref"],
+
+        // EazzyPay
+        ["eazzypay", "payment of kes"],
+
+        // Buy Goods
+        ["buy goods"],
+
+        // Mobile Transfer
+        ["mobile transfer"],
+
+        // Equitel
+        ["equitel", "received"]
+
+    ];
+
+    return equityPatterns.some(pattern =>
+        pattern.every(word => text.includes(word))
+    );
+
+}
 app.post('/api/webhooks/equity-payment', (req, res) => {
   let rawBody = '';
   let messageData: any = {};
@@ -150,6 +178,21 @@ app.post('/api/webhooks/equity-payment', (req, res) => {
   let transaction: Transaction;
 
   if (rawBody) {
+    if (!isEquityPaymentSMS(rawBody)) {
+
+    console.log("🚫 Ignored SMS");
+
+    console.log(rawBody);
+
+    return res.status(200).json({
+
+        status: "ignored",
+
+        reason: "Not an Equity payment SMS"
+
+    });
+
+}
     // We have a raw message, let's parse it
     const parsed = parseEquityMessage(rawBody);
     transaction = {
@@ -192,13 +235,12 @@ app.post('/api/webhooks/equity-payment', (req, res) => {
   // Basic double-payment/duplicate ref protection (idempotency check!)
   const isDuplicate = transactions.some(t => t.reference === transaction.reference);
   if (isDuplicate) {
-    res.status(409).json({
-      status: 'error',
-      code: 'DUPLICATE_REFERENCE',
-      message: `Transaction with reference ${transaction.reference} already processed.`
-    });
-    return;
-  }
+  return res.status(200).json({
+    status: "duplicate",
+    message: "Transaction already processed",
+    reference: transaction.reference
+  });
+}
 
   transactions.unshift(transaction); // Prepend to show on top
   saveTransactions(transactions);
