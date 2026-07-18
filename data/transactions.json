@@ -1,5 +1,19 @@
 [
   {
+    "id": "c3xx0fo7t",
+    "amount": 5500,
+    "currency": "KES",
+    "senderName": "BENJAMIN KIPROP",
+    "reference": "EQBR92JS0X",
+    "account": "600123",
+    "timestamp": "2026-07-15T08:15:00.000Z",
+    "balance": 173700,
+    "rawMessage": "EazzyPay: Payment of KES 5,500.00 to Buy Goods Acc 600123 from BENJAMIN KIPROP Ref: EQBR92JS0X on 2026-07-15 11:15:00. Balance KES 173,700.00.",
+    "status": "completed",
+    "parsedSuccessfully": true,
+    "type": "eazzypay"
+  },
+  {
     "id": "1",
     "amount": 2500,
     "currency": "KES",
