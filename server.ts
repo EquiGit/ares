@@ -127,34 +127,8 @@ app.post('/api/transactions/clear', (req, res) => {
   res.json({ status: 'ok', message: 'Transactions cleared successfully' });
 });
 
-// API: Webhook endpoint for Equity Payment Messages
 function isEquityPaymentSMS(message: string): boolean {
-
-    const text = message.toLowerCase();
-
-    const equityPatterns = [
-
-        // New Equity format
-        ["confirmed", "phone no", "received via m-pesa", "ref"],
-
-        // EazzyPay
-        ["eazzypay", "payment of kes"],
-
-        // Buy Goods
-        ["buy goods"],
-
-        // Mobile Transfer
-        ["mobile transfer"],
-
-        // Equitel
-        ["equitel", "received"]
-
-    ];
-
-    return equityPatterns.some(pattern =>
-        pattern.every(word => text.includes(word))
-    );
-
+    return true;
 }
 app.post('/api/webhooks/equity-payment', (req, res) => {
   let rawBody = '';
