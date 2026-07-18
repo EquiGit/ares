@@ -30,7 +30,7 @@ export function parseEquityMessage(text: string): Partial<Transaction> {
     lowerText.includes('received via m-pesa')
   ) {
 
-    result.type = 'mpesa_confirmation';
+    result.type = 'generic';
 
   } else if (lowerText.includes('eazzypay')) {
 
@@ -101,24 +101,33 @@ export function parseEquityMessage(text: string): Partial<Transaction> {
 
   }
 
-  // --------------------------------------------------
-  // Sender
-  // --------------------------------------------------
+// --------------------------------------------------
+// Sender
+// --------------------------------------------------
+
+const newFormat = text.match(
+  /from\s+(.+?)\s+Phone\s+No\.\s*(254\d{9}|07\d{8}|01\d{8})/i
+);
+
+if (newFormat) {
+
+  result.senderName = newFormat[1]
+    .trim()
+    .replace(/\s+/g, ' ')
+    .toUpperCase();
+
+  result.senderPhone = newFormat[2];
+
+} else {
 
   let senderName = '';
 
   const senderRegexes = [
 
-    // NEW Equity format
-    /from\s+(.+?)\s+Phone\s+No\./i,
-
-    // EazzyPay
     /from\s+([A-Za-z\s]+?)(?:\s*(?:\(|ref|to|acc|on|\d{10}))/i,
 
-    // Equitel
     /from\s+(\d{9,12})\s*-\s*([A-Za-z\s]+?)(?:\s*(?:\(|ref|to|acc|on|bal|$))/i,
 
-    // Generic
     /from\s+([A-Za-z\s]+?)(?:\s+$|\s+on\s+|$)/i,
 
   ];
@@ -146,15 +155,15 @@ export function parseEquityMessage(text: string): Partial<Transaction> {
 
   if (senderName) {
 
-    result.senderName =
-      senderName
-        .replace(/\b(acc|ref|balance|bal|on|to)\b.*/i, '')
-        .replace(/\s+/g, ' ')
-        .trim()
-        .toUpperCase();
+    result.senderName = senderName
+      .replace(/\b(acc|ref|balance|bal|on|to)\b.*/i, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .toUpperCase();
 
   }
 
+}
   // --------------------------------------------------
   // Phone
   // --------------------------------------------------
@@ -206,8 +215,8 @@ export function parseEquityMessage(text: string): Partial<Transaction> {
   // --------------------------------------------------
 
   const dateMatch = text.match(
-    /on\s+(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}|\d{2}\/\d{2}\/\d{4}\s+\d{2}:\d{2}|\d{2}-\d{2}-\d{4}\s+at\s+\d{2}:\d{2})/i
-  );
+  /on\s+(\d{2}-\d{2}-\d{4}\s+at\s+\d{2}:\d{2}|\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}|\d{2}\/\d{2}\/\d{4}\s+\d{2}:\d{2})/i
+);
 
   if (dateMatch) {
 
@@ -244,11 +253,11 @@ export function parseEquityMessage(text: string): Partial<Transaction> {
   // --------------------------------------------------
 
   if (
-    result.amount &&
-    result.reference &&
-    result.senderName &&
-    result.senderName !== 'Unknown Customer'
-  ) {
+  result.amount !== undefined &&
+  result.reference &&
+  result.senderName &&
+  result.senderName !== 'Unknown Customer'
+) {
 
     result.parsedSuccessfully = true;
 
