@@ -6,7 +6,7 @@ import { Transaction } from './src/types.js';
 import { createServer as createViteServer } from 'vite';
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 // Setup directories for database file
 const DATA_DIR = path.join(process.cwd(), 'data');
@@ -236,24 +236,34 @@ app.get('/api/events', (req, res) => {
 });
 
 async function startServer() {
-  // Vite Dev Server Integration
+
   if (process.env.NODE_ENV !== 'production') {
+
     const vite = await createViteServer({
-      server: { middlewareMode: true },
+      server: {
+        middlewareMode: true,
+      },
       appType: 'spa',
     });
+
     app.use(vite.middlewares);
+
   } else {
+
     const distPath = path.join(process.cwd(), 'dist');
+
     app.use(express.static(distPath));
+
     app.get('*', (req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));
     });
+
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`🚀 ARES Gateway running on port ${PORT}`);
   });
+
 }
 
 startServer();
