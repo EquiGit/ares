@@ -131,6 +131,9 @@ function isEquityPaymentSMS(message: string): boolean {
     return true;
 }
 app.post('/api/webhooks/equity-payment', (req, res) => {
+   console.log("========== NEW WEBHOOK ==========");
+   console.log(req.body);
+   console.log("===============================");
   let rawBody = '';
   let messageData: any = {};
 
