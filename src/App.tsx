@@ -68,7 +68,7 @@ export default function App() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState<'all' | 'eazzypay' | 'mobile_transfer' | 'equitel' | 'failed'>('all');
+  const [activeTab, setActiveTab] = useState<'all' | 'eazzypay' | 'mobile_transfer' | 'equitel' | 'mpesa' | 'failed'>('all');
   const [connectionStatus, setConnectionStatus] = useState<'connected' | 'disconnected' | 'connecting'>('connecting');
   const [muteSound, setMuteSound] = useState(() => {
     const saved = localStorage.getItem('equity_dashboard_mute');
@@ -120,7 +120,7 @@ export default function App() {
       paymentCount: number;
       lastPayment: string;
       account: string;
-      type: 'eazzypay' | 'mobile_transfer' | 'equitel' | 'generic';
+      type: 'eazzypay' | 'mobile_transfer' | 'equitel' | 'mpesa' | 'generic';
     }>();
 
     transactions.forEach(tx => {
@@ -352,6 +352,7 @@ export default function App() {
     if (activeTab === 'failed' && tx.status !== 'failed') return false;
     if (activeTab === 'eazzypay' && tx.type !== 'eazzypay') return false;
     if (activeTab === 'mobile_transfer' && tx.type !== 'mobile_transfer') return false;
+    if (activeTab === 'mpesa' && tx.type !== 'mpesa') return false;
     if (activeTab === 'equitel' && tx.type !== 'equitel') return false;
     if (activeTab !== 'all' && activeTab !== 'failed' && tx.status === 'failed') return false;
 
@@ -655,7 +656,7 @@ export default function App() {
                 {/* Categories Filters & Segmented Controller */}
                 {streamMode === 'stream' && (
                   <div className="px-5 py-3 border-b border-slate-100 bg-white flex flex-wrap gap-1.5 items-center">
-                    {(['all', 'eazzypay', 'mobile_transfer', 'equitel', 'failed'] as const).map((tab) => {
+                    {(['all', 'eazzypay', 'mobile_transfer', 'mpesa', 'equitel', 'failed'] as const).map((tab) => {
                       const isActive = activeTab === tab;
                       const label = tab === 'all' 
                         ? 'All' 
@@ -663,6 +664,8 @@ export default function App() {
                         ? 'EQ Mobile' 
                         : tab === 'eazzypay' 
                         ? 'EazzyPay' 
+                        : tab === 'mpesa'
+                        ? 'M-PESA'
                         : tab === 'equitel'
                         ? 'Equitel'
                         : 'Errors';

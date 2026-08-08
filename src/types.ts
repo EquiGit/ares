@@ -11,7 +11,7 @@ export interface Transaction {
   rawMessage: string;
   status: 'completed' | 'failed' | 'pending';
   parsedSuccessfully: boolean;
-  type: 'eazzypay' | 'mobile_transfer' | 'equitel' | 'generic';
+  type: 'eazzypay' | 'mobile_transfer' | 'equitel' | 'mpesa' | 'generic';
 }
 
 export interface WebhookConfig {

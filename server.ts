@@ -1,7 +1,8 @@
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
-import { parseEquityMessage } from './src/parser.js';
+import { parseEquityMessage } from './src/parsers/equityParser.js';
+import { parseMpesaMessage } from './src/parsers/mpesaParser.js';
 import { Transaction } from './src/types.js';
 import { createServer as createViteServer } from 'vite';
 
@@ -171,7 +172,19 @@ app.post('/api/webhooks/equity-payment', (req, res) => {
 
 }
     // We have a raw message, let's parse it
-    const parsed = parseEquityMessage(rawBody);
+    let parsed;
+
+if (
+  rawBody.toUpperCase().includes("MPESA") ||
+  rawBody.toUpperCase().includes("M-PESA") ||
+  rawBody.includes("Confirmed.")
+) {
+  console.log("🟢 M-PESA message detected");
+  parsed = parseMpesaMessage(rawBody);
+} else {
+  console.log("🟣 Equity message detected");
+  parsed = parseEquityMessage(rawBody);
+}
     transaction = {
       id: Math.random().toString(36).substring(2, 11),
       amount: parsed.amount || messageData.amount || 0,
@@ -273,6 +286,9 @@ async function startServer() {
 
     app.use(express.static(distPath));
 
+    app.get('/dashboard', (req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
+});
     app.get('*', (req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));
     });
