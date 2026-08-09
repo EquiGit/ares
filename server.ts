@@ -283,6 +283,10 @@ async function startServer() {
   } else {
 
     const distPath = path.join(process.cwd(), 'dist');
+    
+    console.log('📁 CWD:', process.cwd());
+    console.log('📁 DIST PATH:', distPath);
+    console.log('📄 INDEX EXISTS:', fs.existsSync(path.join(distPath, 'index.html')));
 
     app.use(express.static(distPath));
 
