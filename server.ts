@@ -284,18 +284,15 @@ async function startServer() {
 
     const distPath = path.join(process.cwd(), 'dist');
     
-    console.log('📁 CWD:', process.cwd());
-    console.log('📁 DIST PATH:', distPath);
-    console.log('📄 INDEX EXISTS:', fs.existsSync(path.join(distPath, 'index.html')));
-
     app.use(express.static(distPath));
 
-    app.get('/dashboard', (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(path.join(distPath, 'index.html'));
 });
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
+
+app.get('/dashboard', (req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
+});
 
   }
 
